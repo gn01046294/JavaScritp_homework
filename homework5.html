@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>05createOptionObject.html</title>
+    <style>
+        .div1 {
+            margin: 50px auto;
+            border: 1px solid blue;
+            width: 600px;
+            height: 300px;
+            background-color: #e0e0e0;
+        }
+
+        .divh {
+            margin-top: 10px;
+            margin-left: 15px;
+            font-size: 30px;
+        }
+
+        .divs {
+            margin-top: 15px;
+            margin-left: 15px;
+        }
+
+        .divr {
+            float: right;
+            width: 350px;
+            height: 80px;
+        }
+
+        h {
+            width: 400px;
+            padding-left: 15px;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            document.getElementById("idSelectYear").addEventListener("change", clicky);//change:發生改變的時候
+            document.getElementById("idSelectMonth").addEventListener("change", clicky);
+            document.getElementById("idSelectDay").addEventListener("change", inninfomation);
+            for (i = 1; i <= 11; i++) {    //新增預設年2010~2020
+                var opt = document.createElement("option");
+                opt.value = i + 2009;
+                opt.innerHTML = i + 2009;
+                document.getElementById("idSelectYear").appendChild(opt);
+            }
+            for (i = 1; i <= 12; i++) {    //新增新增預設月
+                var opt = document.createElement("option");
+                opt.value = i;
+                opt.innerHTML = i;
+                document.getElementById('idSelectMonth').appendChild(opt);
+            }
+
+            for (i = 1; i <= 31; i++) {      //新增預設日
+                var opt = document.createElement("option");
+                opt.value = i;
+                opt.innerHTML = i;
+                document.getElementById("idSelectDay").appendChild(opt);
+            }
+            function clicky() {
+                var year = document.getElementById("idSelectYear").value;
+                var month = document.getElementById("idSelectMonth").value;
+                day = getdaybyyearandmonth(year, month); //傳入兩個參數
+                updatedayoption(day); //呼叫調整的day
+                // inninfomation(year, month, day);
+            }
+            function getdaybyyearandmonth(year, month) {  //傳入年 月 判斷day的日數
+                var day = 0;
+                if (month == 2) {
+                    if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
+                        day = 29;
+                    }
+                    else {
+                        day = 28;
+                    }
+                } else if (month == 4 || month == 6 || month == 9 || month == 11) {
+                    day = 30;
+                }
+                else {
+                    day = 31;
+                }
+                return day;
+
+            }
+            function updatedayoption(day) {
+                var dayvalue = document.getElementById("idSelectDay").value;
+                document.getElementById("idSelectDay").options.length = 0;
+                for (i = 1; i <= day; i++) {
+                    var opt = document.createElement("option");
+                    opt.value = i;
+                    opt.innerHTML = i;
+                    document.getElementById("idSelectDay").appendChild(opt);
+                }
+
+                if (dayvalue > day) { //如果使用者所選的天數(值)大於表單內最大的天數 則把表單內最大的天數指定給使用者的天數
+                    dayvalue = day;
+                    document.getElementById("idSelectDay").value = dayvalue;
+                }
+                inninfomation();
+            }
+            function inninfomation() {
+                var theyear = document.getElementById("idSelectYear").value;
+                var themonth = document.getElementById("idSelectMonth").value;
+                var theday = document.getElementById("idSelectDay").value;
+                document.getElementById("sp1").innerHTML = theyear + "年" + themonth + "月" + theday + "日";
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="div1">
+        <div class="divh">
+            <i>WelCome</i>
+        </div>
+        <div class="divs">
+            <select id="idSelectYear" name="year"></select>
+            <span>年</span>
+            <select id="idSelectMonth" name="month"></select>
+            <span>月</span>
+            <select id="idSelectDay" name="day"></select>
+            <span>日</span>
+            <div class="divr">
+                <i>information</i>
+                <br>
+                <span>您所選擇的日期:</span>
+                <span id="sp1"></span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

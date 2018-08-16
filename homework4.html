@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .block {
+            /*  顯示 並視為區塊*/
+            width: 100%;
+            height: 350px;
+            display: block;
+        }
+
+        .none {
+            /* 不顯示 並 不占任何空間*/
+            display: none;
+        }
+
+        .blockplay {
+            display: inline;
+        }
+
+        .field {
+            width: 600PX;
+            margin: 60px auto;
+            border-radius: 20PX;
+        }
+
+        .legend {
+            text-align: center;
+            font-size: larger
+        }
+
+        .ads {
+            margin: 3PX 2PX;
+            width: 60PX;
+            height: 60PX;
+
+        }
+
+        .ads1 {
+            margin: 3PX 2PX;
+            width: 70PX;
+            height: 70PX;
+            /* border: 2px solid red; */
+        }
+        .ns1{
+            margin: 3PX 2PX;
+            width: 40PX;
+            height: 40PX;
+        }
+
+        .numberads {
+            margin: 3PX 2PX;
+            width: 30PX;
+            height: 30PX;
+        }
+
+        /* .adsborder {
+            margin: 3PX 2PX;
+            width: 60PX;
+            height: 60PX;
+            border: 3px solid red;
+        } */
+
+        .pdiv {
+            width: 100%;
+            padding-top: 10px;
+            text-align: center;
+        }
+
+        .numberdiv {
+            width: 350px;
+            height: 10px;
+        }
+    </style>
+    <script>
+        //各個事件綁定--------------------------------------------------------
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("idback").addEventListener("click", backf);
+            document.getElementById("idstop").addEventListener("click", stop);
+            document.getElementById("idplay").addEventListener("click", play);
+            document.getElementById("idforward").addEventListener("click", forwordf);
+            for (var n = 1; n <= 5; n++) {
+                document.getElementById("n" + n).addEventListener("mouseover", mover);
+                document.getElementById("sad" + n).addEventListener("mouseover", moversad);
+                document.getElementById("sad" + n).addEventListener("mouseout", mout);
+                document.getElementById("n" + n).addEventListener("mouseout", mout);
+            }
+
+        })
+        //---------------------------------------------------------------------
+        var count = 1;
+        var isPlay = true ; //準備設定用來控制暫停跟撥放的 (假想成true的話就是在撥放  false就是不撥)
+        run();//載入時先呼叫此函式
+
+//處理輪播事件(大圖 小圖)--
+        function run() { //開始輪播 輪播的函式為 forcount
+            t = window.setInterval(forcount, 1500); //每1.5秒 執行forcount (這裡的forcount是指函式)
+        }
+//處理count這個變數
+        function forcount() {//此函式專門來處理count變數
+            count++; //將count+1 
+            if (count > 5) {  //如果大於5 (因為圖檔名稱沒有大於5..) 
+                count = 1; //重置為1
+            }
+            show(count);//將處理過後的count變數 放入show函式內 所以show函式在設定時就要先設定需要給予函數
+        }
+
+        function show(count) { //此函式來處理 顯示大圖 及 小圖 這裡函式要設定需要丟入一個參數
+            closeAllad();//先呼叫這此函式
+            document.getElementById("ad" + count).className = "block";//將圖檔設定為black (顯示)出來  選定哪一張圖用變數count來控制 (所以圖檔名稱要設定最後一個為數字 且前面的檔名也要相同)
+            document.getElementById("sad" + count).className = "ads1";//將小圖 變大選定哪一張圖用變數count來控制 (所以圖檔名稱要設定最後一個為數字 且前面的檔名也要相同) 
+            document.getElementById("n"+count).className="ns1";
+        }
+        function show2(count){
+            closeAllad();
+            document.getElementById("sad" + count).className = "ads1";
+            document.getElementById("ad" + count).className = "block";
+            document.getElementById("n"+count).className="ns1";
+        }
+        function closeAllad() {//先將所有的圖片設定為不顯示 
+            for (var i = 1; i <= 5; i++) {
+                document.getElementById("ad" + i).className = "none";//大圖片不顯示 選定哪一張圖用變數count來控制 (所以圖檔名稱要設定最後一個為數字 且前面的檔名也要相同)
+                document.getElementById("sad" + i).className = "ads";//小圖片全部顯示(但尺寸較小) 可以和大圖相呼應(大圖跑到哪一個 小圖相對變較小) 選定哪一張圖用變數count來控制 (所以圖檔名稱要設定最後一個為數字 且前面的檔名也要相同)
+                document.getElementById("n"+i).className="numberads";
+            }
+        }
+//處理小數字對應圖檔--  
+        function mover() {             //滑鼠指到數字 
+            window.clearInterval(t);   //先停止輪播
+            var a = this.id.substr(1); //抓出指到的數字的id的第2個字(因為我檔名只取2個字) 取出後 放入變數a內
+            count = a;                 //將抓到的值放入count
+            show(count);    // 呼叫 show
+        }
+        function moversad(){
+            window.clearInterval(t);
+            var a = this.id.substr(3);
+            count = a;
+            show2(count);
+        }
+        function mout() { // 滑鼠滑出 
+            if(isPlay){ //如果 true 就是正在撥放 
+                run(); //如果正在撥放 就繼續執行輪播
+            }
+        }
+        //---處理下方上一個 停止 PLAY 下一個-----------------------------------------------------------------  
+        function backf() { //上一個
+            if (count == 1) {  //先抓count 看成count代表第幾張圖片 count如果是第1張圖片 則跳回第5張圖
+                count = 5;
+            } else { //如果說不是第1張圖片 則將count -1 
+                count--;
+            }
+            show(count); //上面處理好count之後 再將此變數丟回show()的函式內 並將count放入()內 ※因為上方show的函式內有設定要丟入參數
+        }
+// 按下去就 停止輪播------------------------------
+        function stop() {
+        
+            document.getElementById("idstop").className = "none"; // 將停止按鈕設定為不顯示
+            document.getElementById("idplay").className = "blockplay"; //將撥放按鈕設定為 顯示
+            window.clearInterval(t);  //輪播牆停止輪播 
+            isPlay = false;  //將此變數 變為false 變為false 則 滑出的函式也不會動
+        }
+        function play() {//按下去就 開始輪播
+            document.getElementById("idstop").className = "blockplay"; //將停止鈕顯示
+            document.getElementById("idplay").className = "none"; //將PLAY鈕 隱藏
+            t = window.setInterval(forcount, 1500); //執行輪播
+            isPlay = true ; //輪播牆正在執行 設定為true 
+        }
+        function forwordf() { //下一個 函式
+            forcount(); //執行此函式 (count便會加 連帶著 圖片會跟著走)
+        }
+    </script>
+</head>
+
+<body>
+    <fieldset class="field">
+        <legend class="legend">最嗆車款介紹</legend>
+        <div class="pdiv">
+            <a href="https://dealers.maserati.com/dealers/tw/zh/modena-motori-taiwan/index.html">
+                <img id="ad1" class="block" src="images/hw4-1.jpg">
+            </a>
+            <a href="http://www.porsche.tw/taiwan/zh/">
+                <img id="ad2" class="none" src="images/hw4-2.jpg">
+            </a>
+            <a href="https://news.u-car.com.tw/article/21586">
+                <img id="ad3" class="none" src="images/hw4-3.jpg">
+            </a>
+            <a href="http://new.nissan.com.tw/nissan/cars/GT-R">
+                <img id="ad4" class="none" src="images/hw4-4.jpg">
+            </a>
+            <a href="https://www.bentleymotors.com/cn/zh.html">
+                <img id="ad5" class="none" src="images/hw4-5.jpg">
+            </a>
+        </div>
+        <div class="pdiv">
+            <img id="n1" class="numberads" src="images/1.jpg">
+            <img id="n2" class="numberads" src="images/2.jpg">
+            <img id="n3" class="numberads" src="images/3.jpg">
+            <img id="n4" class="numberads" src="images/4.jpg">
+            <img id="n5" class="numberads" src="images/5.jpg">
+        </div>
+        <!-- <hr> -->
+        <div class="pdiv">
+            <img id="sad1" class="ads" src="images/hw4-1.jpg">
+            <img id="sad2" class="ads" src="images/hw4-2.jpg">
+            <img id="sad3" class="ads" src="images/hw4-3.jpg">
+            <img id="sad4" class="ads" src="images/hw4-4.jpg">
+            <img id="sad5" class="ads" src="images/hw4-5.jpg">
+        </div>
+
+        <div class="pdiv">
+            <img id="idback" src="images/back.png">
+            <img id="idplay" class="none" src="images/play.png">
+            <img id="idstop" src="images/stop.png">
+            <img id="idforward" src="images/forward.png">
+        </div>
+        <!-- <img src="images/play.png"> -->
+    </fieldset>
+</body>
+
+</html>

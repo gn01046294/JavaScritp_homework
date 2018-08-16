@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        div{
+            width: 420px;
+            margin: 100px auto;
+        }
+        .s {
+            -webkit-filter: grayscale(1);
+            /*沒有任何色彩的黑白影像*/
+        }
+        .n {
+            -webkit-filter: grayscale(0);
+            /*顏色不變*/
+        }
+    </style>
+    <script>
+        var imgs;
+        document.addEventListener("DOMContentLoaded", function () {
+            imgs = document.querySelectorAll("img.s");
+
+            var imgsLen = imgs.length;
+
+            for (var i = 0; i < imgsLen; i++) {   //以下是給予每張一圖片(imgs[i]) 的事件 以及綁定事件處理(函式)
+                imgs[i].addEventListener("mouseover", mouseOver);  
+                imgs[i].addEventListener("mouseout", mouseOut);
+                imgs[i].addEventListener("click", Click);
+            }
+
+        });
+        var starCount = 5;                             //下方處理照片變色時要用的變數 ※建議能使用變數盡量使用變數 如遇到需要更改(例如要改成20顆星) 只需要更改變數即可※
+        var islockStar = false;                        //設定一個變數 後面用來判斷第一次"按滑鼠"和第二次按滑鼠
+                                                       //當有發生click(滑鼠點擊)時 會變更為true
+                                    
+        function mouseOver() {                         //滑鼠滑入時處理..
+            if (!islockStar) {                          //判斷是否有發生click...(載入網頁時應該要可以滑入時"有顯示" 所以要讓if的敘述能夠執行)
+                var a = this.id.substr(3);              //抓到滑鼠指到的位置..這裡的this.id指的是mouseover事件時所產生的物件(這裡的物件是id) substr是取第幾個字的方法 由0開始數 抓到後放入 變數a
+                document.getElementById("iddiv").innerHTML = "打分數中.." + "要給" + a + "顆星星嗎??";           //抓到滑鼠指到的位置之後 在下方div區塊輸入敘述
+                resetstar(a);                           //呼叫resetstar函式 參數是用上面this.id.substr抓取的 ex假設滑入第3顆星星 變數a就是3(因為圖片id後面的編號和對應幾顆星取一樣)
+            }
+        }
+        function mouseOut() { //滑鼠滑出時處理
+            if (!islockStar) {//判斷是否有發生click...(載入網頁時應該要可以滑出時"清空"顯示 所以要讓if的敘述能夠執行)
+                var a = this.id.substr(3);
+                for (var i = 1; i <= starCount; i++) {
+                    document.getElementById("img" + i).className = "s";  //影像變黑白...
+                }
+                document.getElementById("iddiv").innerHTML = "";//下方敘述清空
+            }
+        }
+        function resetstar(a) {                 //處理照片變色的函式 ()內有參數 所以在呼叫此函式時要給予參數! 根據傳入的a來執行 也就是說 如果是滑到第3顆 應做到第3顆..
+            // for (var i = 1; i <= starCount; i++) {document.getElementById("img" + i).className = "s"; //s是沒有色彩// }
+            for (var i = 1; i <= a; i++) {
+                document.getElementById("img" + i).className = "n";//根據傳入的變數a 來判斷該執行到哪一個
+            }
+        }
+        var messageArray = ["謝謝您給我們1顆星..我們會努力<br>(如需重新評分,請任意點選一顆星星)","謝謝您給我們2顆星..我們會加強<br>(如需重新評分,請任意點選一顆星星)","謝謝您給我們3顆星..再接再厲!<br>(如需重新評分,請任意點選一顆星星)","謝謝您給我們4顆星..感謝您的支持<br>(如需重新評分,請任意點選一顆星星)","謝謝您給我們5顆星..謝謝!祝您一生平安<br>既然給5顆星..就不要重新評分了吧!?<br>(再點一次還是可以啦)"]
+        //上面陣列是給予下面判斷用  除非不得以否則盡量不要去動到"陣列"內的值 所以利用下方的變數來調整較佳 
+        function Click() { //滑鼠有點..時處理
+            var starLen = this.id.substr(3);//一樣根據抓到的物件(this.id) 存入變數 starLen 內           
+                    document.getElementById("iddiv").innerHTML = messageArray[starLen-1]; //根據滑鼠點擊後取得的數(上一行) 給予對應的陣列內容(記得陣列註標是從0開始算)
+            if (islockStar) { //如果目前是true(未執行點擊) 則變為false 如此上面滑入 滑出 的函式才會執行
+                islockStar = false;
+                document.getElementById("iddiv").innerHTML = "重新評分";
+            } else {//否則 (滑鼠點擊過) 則變成true 則上面滑鼠滑入滑出 便不會執行(因為在滑入 滑出的if敘述有加 "!")
+                islockStar = true;
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <div>
+        <p>給予評價：</p>
+        <img id="img1" class="s" src="Images/star.jpg">
+        <img id="img2" class="s" src="Images/star.jpg">
+        <img id="img3" class="s" src="Images/star.jpg">
+        <img id="img4" class="s" src="Images/star.jpg">
+        <img id="img5" class="s" src="Images/star.jpg">
+        <p id="iddiv"></p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        table {
+            margin:150px  auto;
+            width: 500px;
+            height: 200px;
+            border-collapse: collapse;
+            border: 3px solid #2828ff;
+        }
+
+        td {
+            height: 100%;
+            color: red;
+            background-color: #a6ffff;
+            border: 1px solid blue;
+            padding-bottom: 5px;
+            padding-top: 5px;
+        }
+    </style>
+    <script>
+        document.write("<table>" + "<tr>")
+        for (var a = 2; a <= 9; a++) {
+            document.write("<td>")
+            for (var b = 1; b <= 9; b++) {
+                document.write(a + "*" + b + "=" + a * b + "<br>"+"<br>")
+            }
+            document.write("</td>")
+        }
+        document.write("</table>" + "</tr>")
+
+        // document.write("<hr>")//----------------------------------------------------------------------
+
+        // var str = '', f = ""; //設定變數
+        // for (var a = 2; a <= 9; a++) {
+        //     for (var b = 1; b <= 9; b++) {
+        //         str += a + "x" + b + "=" + a * b + "<br>"  ;  //將內容放到str內 記得要用+= 才會累加進去 
+        //     }
+        //     f += "<td>" + str + "</td>" ;           //在將內容放到td內
+        //     str = "" ;//str歸0
+        // }
+        // document.write("<table>" + "<tr>" + f + "</tr>" + "</table>") //最後輸出
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

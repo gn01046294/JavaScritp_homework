@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html lang="zh-tw">
+<!--由第7章 LAB04 改寫-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>04dynamicInsert.html</title>
+    <style>
+        form {
+            font-family: 微軟正黑體;
+            width: 600px;
+            margin: 150px auto;
+        }
+
+        fieldset {
+            border: 2px double  	#0000c6;
+            border-radius: 15px;
+        }
+
+        div {
+            padding-top: 5px;
+            /* border-bottom: 1px solid  	#d0d0d0; */
+            padding-bottom: 20px;
+        }
+
+        .spanex {
+            color: #bebebe;
+            font-size: 10px;
+        }
+
+        .sub {
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .div1 {
+            margin-top: 15px;
+            margin-left: 15px;
+            border-bottom: 1px solid #8e8e8e
+        }
+
+        i {
+            color: red;
+            font-size: 10px;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("idPwd").addEventListener("blur", chkPassword)
+            document.getElementById("idName").addEventListener("blur", chkName)
+            document.getElementById("iddate").addEventListener("blur", chkdate)
+        });
+        function chkName() {
+            var theName = document.getElementById("idName").value;
+            var theNameLen = theName.length;
+            var flag3 = false;
+            // var re=/^[\u4e00-\u9fff]$/g;
+            var theResult1 = document.getElementById("nameidsp");
+            if (theName == "") {
+                theResult1.innerHTML = "<i><img src='images/error.png'>不能為空白</i>";
+            }
+            else if (theNameLen >= 2) {
+                for (var a = 0; a < theNameLen; a++) {
+                    var nameChr = theName.charCodeAt(a);//var nameChr = theName.charCodeAt(a);
+                    if (nameChr >= 0x4E00 && nameChr <= 0x9FFF) {// re.test(nameChr
+                        flag3 = true;
+                    }
+                    else {
+                        flag3 = false;
+                        theResult1.innerHTML = "<i><img src='images/error.png'>請輸入中文</i>"
+                        break;
+                    }
+                }
+                if (flag3)
+                    theResult1.innerHTML = "<img src='images/correct.png'>輸入正確"
+            } else {
+                theResult1.innerHTML = "<i><img src='images/error.png'>至少輸入兩個字</i>"
+            }
+        }
+        function chkPassword() {
+
+            var thePwd = document.getElementById("idPwd").value;
+            var thePwdLen = thePwd.length;
+            var flag1 = false;
+            var flag2 = false;
+            var flag3 = false;
+            // re = /[!@#$%^&*]/g;
+            var theResult = document.getElementById("idsp");
+
+            if (thePwd == "")
+                theResult.innerHTML = "<i><img src='images/error.png'>不能為空白</i>";
+
+            else if (thePwdLen >= 6) {
+
+                for (var i = 0; i < thePwdLen; i++) {
+                    var PwdChr = thePwd.charAt(i).toUpperCase();
+                    if (PwdChr >= "A" && PwdChr <= "Z")
+                        flag1 = true;
+                    else if (PwdChr >= "0" && PwdChr <= "9")
+                        flag2 = true;
+                    else if (PwdChr == "!" || PwdChr == "@" || PwdChr == "#" || PwdChr == "$" || PwdChr == "%" || PwdChr == "^" || PwdChr == "&" || PwdChr == "*") //re.test(PwdChr)
+                        flag3 = true;
+                    if (flag1 && flag2 && flag3)
+                        break;
+                }
+                if (flag1 && flag2 && flag3)
+                    theResult.innerHTML = "<img src='images/correct.png'>輸入正確";
+                else
+                    theResult.innerHTML = "<i><img src='images/error.png'>輸入有誤</i>";
+            }
+            else
+                theResult.innerHTML = "<i><img src='images/error.png'>密碼須大於6個字</i>"; //'width='16' height='16'
+        }
+        function chkdate() {
+            var dateValue = false;
+            var theDate = document.getElementById("iddate").value; //取得輸入的值
+            var re = /^\d{4}[\/]{1}\d{1,2}[\/]{1}\d{1,2}$/;  //判斷格式是否符合yyyy/MM/dd  /^開始 \d比對0-9數字{比對4個}[\/]必須要\/ {1個}..
+            var d = new Date(theDate);//將輸入的值轉為Date物件
+            var thisDay = d.getDate();//回傳當天日數(1-31)
+            var theResult3 = document.getElementById("datesp");
+            if (re.test(theDate)) { //用re內的條件來比對輸入的值
+                var theDateSp = theDate.split("/");//將值之間的/消除(注意回傳為陣列)
+                if (theDateSp[2] == thisDay) { //上方已把取出來的值放入date的物件內 date物件會判斷是否屬於date(日期物件) 如果沒有此日期 則為false
+                    dateValue = true;
+                    theResult3.innerHTML = "<img src='images/correct.png'>輸入正確";
+                }
+                else {
+                    dateValue = false;
+                    theResult3.innerHTML = "<i><img src='images/error.png'>日期格式輸入錯誤</i>"
+                }
+            }
+            else {
+                dateValue = false;
+                theResult3.innerHTML = "<i><img src='images/error.png'>日期格式應為yyyy/MM/dd</i>"
+            }
+        }
+        function chkAll(){
+            var nameValue=document.getElementById("idName").value;
+            var pwdValue=document.getElementById("idPwd").value;
+            var dateValue=document.getElementById("iddate").value;
+            if(nameValue==""){
+                alert("請輸入姓名")
+            }else if(pwdValue==""){
+                alert("請輸密碼")
+            }else if(dateValue==""){
+                alert("請輸入日期")
+            }
+        }
+    </script>
+</head>
+
+
+<body>
+    <form>
+        <fieldset>
+            <legend>Form check</legend>
+            <div class="div1">
+                <label for="idName">姓名:</label>
+                <input type="text" id="idName" size="20" autocomplete="off" autofocus placeholder="輸入姓名">
+                <span id="nameidsp"></span>
+                <br>
+                <span class="spanex">(1.不可空白，2.至少兩個字以上，3.必須全部為中文字)</span>
+            </div>
+
+            <div class="div1">
+                <label for="idPwd">密碼:</label>
+                <input type="password" id="idPwd" size="20" autocomplete="off" autofocus placeholder="請輸入密碼" />
+                <span id="idsp"></span>
+                <br>
+                <span class="spanex">(1.不可空白，2.至少6個字且必須包含英文字母、數字、特殊字元[!@#$%^&*])</span>
+            </div>
+
+            <div class="div1">
+                <label for="iddate">日期:</label>
+                <input type="text" id="iddate" size="20" autocomplete="off" autofocus placeholder="ex:2000/2/29">
+                <span id="datesp"></span>
+                <br>
+                <span class="spanex">格式:西元年/月/日 yyyy/MM/dd</span>
+            </div>
+            <div class="sub">
+                <input type="button" value="送出" onclick="chkAll()">
+                <input type="button" value="清除">
+            </div>
+        </fieldset>
+    </form>
+    <br/>
+</body>
+
+</html>

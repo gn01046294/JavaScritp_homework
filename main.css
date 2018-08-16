@@ -1,0 +1,90 @@
+body {            
+    font-family: 微軟正黑體;
+}
+* {         /*讓"首頁"與左邊margin 的空白處消除*/
+    margin: 0;  
+    padding: 0; 
+}
+#allpage {
+    width: 1024px;
+    margin: 120px auto;
+}
+.menu {
+    color: darkblue;
+    width: 100%;
+    overflow: auto;            /*設定容器元件顯示方法 參p116*/
+    list-style-type: none;            /*將項目符號設定成無(none)*/
+    background-color: 	#d0d0d0;            /*給予底色*/
+    border-top-left-radius: 15px;      /*左上方的角變圓滑*/
+    border-top-right-radius: 15px;     /*右上方的角變圓滑*/
+    border-bottom: 3px solid  #7b7b7b;
+}
+
+.menu li {
+    float: left;
+    width: 203.8px;              /*為了讓連結區域能依字型大小的變化自動放大,因此在指定width屬性時採用em為單位*/
+    border-right: 1px solid #cccccc  /*設定右邊有線條*/
+}
+
+.menu li a {          
+    display: block;            /*將inline元素區塊化*/
+    text-align: center;            /*單純只有這一項沒辦法使之置中因為<a>標籤是 inline屬性 必須將之區塊化 dis...*/
+    text-decoration: none;            /*消除底線*/
+    line-height: 3em;          /*超連結的上下行距變大(字會置中)*/
+}
+.menu li a:link{
+    color: navy;
+}
+.menu li a:visited{
+    color:#0000e3;
+}
+.menu li a:hover {            /*a:hover 滑鼠移至的超連結樣式*/
+    color: floralwhite;            /*字的顏色..*/
+    background-color: 	#4f4f4f;            /*底色..*/
+}
+.content {
+    overflow: auto;
+    width: 100%;
+}
+article {
+    width: 100%;
+    /* border-bottom: 3px solid  #7b7b7b;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px; */
+    /* float: left */
+}
+aside {
+    width: 20%;
+    float: right;
+}
+.title {
+    color: darkblue;
+    background-color: 	#d0d0d0;
+    line-height: 2em;
+    padding-left: 25px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+article section {
+    margin: 15px;
+    border-bottom: 1px solid #cccccc;
+    padding-bottom: 5px;
+}
+article section p {
+    margin: 8px 0; /*只給兩個數性值 就是 上 下*/
+}
+.list1 {
+    list-style: decimal inside; /*將清單樣式的屬性合併使用 1個=清單前符號 2個=圖片(沒有則不用打) 3個=符號位置 參p42*/
+}
+aside dl {
+    margin: 15px;
+}
+footer {
+    width: 100%;
+    line-height: 1.5em;
+    background-color:  	#d0d0d0;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    text-align: center;
+    color:  	#ffffff;
+}
